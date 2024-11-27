@@ -2,6 +2,8 @@ import files.Directory;
 import files.File;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FileSystemSimulator {
 //    private static final String SYS_REGEX = "\\n|\\s*&\\s*";
@@ -49,6 +51,25 @@ public class FileSystemSimulator {
         new File("File 32", "txt", List.of("teste", "testando", "testado"), dir3);
         new File("File 33", "txt", List.of("teste", "testando", "testado"), dir3);
 
-        System.out.println(ROOT.toJson());
+        String json = ROOT.toJson();
+
+        Matcher matcherDirectory = Pattern.compile("^\\{\"name\":\"[^\"]+\",\"content\":\\[").matcher(json);
+        if (matcherDirectory.find()) {
+            String matchedPart = matcherDirectory.group();
+            String remainingPart = json.substring(matchedPart.length(),json.length() - 2);
+
+            System.out.println("Parte que casou com o regex:");
+            System.out.println(matcherDirectory.group(1));
+
+
+
+
+
+
+            System.out.println("Parte restante da string:");
+            System.out.println(remainingPart);
+        } else {
+            System.out.println("A string não corresponde ao padrão.");
+        }
     }
 }
