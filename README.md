@@ -13,7 +13,7 @@
 |    cd ~/path    |            Vai para o "path" a partir do ROOT             |
 |    cd ./path    |         Vai para o "path" a partir da pasta atual         |
 |    cd /path     |         Vai para o "path" a partir da pasta atual         |
-| cd /path1/path2 | Cria uma fila e execulta "cd /path1" e depois "cd /path2" |
+| cd /path1/path2 | Cria uma lista e executa "cd /path1" e depois "cd /path2" |
 
 ### Apagar arquivos
 
@@ -26,3 +26,7 @@
 ### Renomear diretórios
 
 ### Listar arquivos de um diretório
+
+| Comando |               Ação                |
+|:-------:|:---------------------------------:|
+|   ls    | Mostra os arquivos da pasta atual |
