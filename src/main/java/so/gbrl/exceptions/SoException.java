@@ -1,6 +1,6 @@
-package so.exceptions;
+package so.gbrl.exceptions;
 
-import so.enums.Text;
+import so.gbrl.enums.Text;
 
 public class SoException extends RuntimeException {
     public static final String UNEXPECTED_ERROR = Text.Style.NEGRITO.apply(Text.Color.VERMELHO.apply("[Erro]")) + Text.Color.VERMELHO.apply(" Ocorreu um problema inesperado!");

@@ -1,5 +1,4 @@
-package so.enums;
-
+package so.gbrl.enums;
 
 public class Text {
     public enum Color implements AbstractColor {

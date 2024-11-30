@@ -1,6 +1,6 @@
-package so.exceptions;
+package so.gbrl.exceptions;
 
-import so.enums.Text;
+import so.gbrl.enums.Text;
 
 public class CommandNotFoundException extends SoException{
     public CommandNotFoundException(String input) {

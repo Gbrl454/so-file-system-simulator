@@ -1,6 +1,6 @@
-package so.command;
+package so.gbrl.command;
 
-import so.exceptions.SoException;
+import so.gbrl.exceptions.SoException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,7 +1,7 @@
-package so.command.cd;
+package so.gbrl.command.cd;
 
-import so.command.CommandBase;
-import so.files.Directory;
+import so.gbrl.command.CommandBase;
+import so.gbrl.files.Directory;
 
 import java.util.regex.Matcher;
 

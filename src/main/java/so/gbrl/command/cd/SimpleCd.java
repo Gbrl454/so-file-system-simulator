@@ -1,10 +1,10 @@
-package so.command.cd;
+package so.gbrl.command.cd;
 
-import so.FileSystemSimulator;
-import so.command.CommandBase;
-import so.exceptions.DirectoryNotFoundException;
-import so.exceptions.SoException;
-import so.files.Directory;
+import so.gbrl.FileSystemSimulator;
+import so.gbrl.command.CommandBase;
+import so.gbrl.exceptions.DirectoryNotFoundException;
+import so.gbrl.exceptions.SoException;
+import so.gbrl.files.Directory;
 
 import java.util.regex.Matcher;
 

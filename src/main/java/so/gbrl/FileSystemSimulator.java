@@ -1,11 +1,11 @@
-package so;
+package so.gbrl;
 
-import so.command.CommandBase;
-import so.exceptions.CommandNotFoundException;
-import so.exceptions.SoException;
-import so.files.Directory;
-import so.files.Journal;
-import so.utils.ReflectionUtil;
+import so.gbrl.command.CommandBase;
+import so.gbrl.exceptions.CommandNotFoundException;
+import so.gbrl.exceptions.SoException;
+import so.gbrl.files.Directory;
+import so.gbrl.files.Journal;
+import so.gbrl.utils.ReflectionUtil;
 
 import java.io.File;
 import java.net.URL;
@@ -50,7 +50,7 @@ public class FileSystemSimulator {
 
     private static Boolean executeInput(String input) throws Exception {
         if (input.equals("exit")) return false;
-        String commandsPackageName = "so.command." + input.split(" ")[0];
+        String commandsPackageName = "so.gbrl.command." + input.split(" ")[0];
         URL commandsPackageUrl = ClassLoader.getSystemClassLoader().getResource(commandsPackageName.replace('.', '/'));
 
         if (commandsPackageUrl == null || commandsPackageUrl.getProtocol() == null)
