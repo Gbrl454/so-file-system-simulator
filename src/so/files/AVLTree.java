@@ -1,6 +1,9 @@
 package so.files;
 
-class AVLTree<T extends Comparable<T>> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AVLTree<T extends Comparable<T>> {
 
     private class Node {
         T value;
@@ -54,8 +57,9 @@ class AVLTree<T extends Comparable<T>> {
     }
 
     // Inserir um valor na árvore
-    public void insert(T value) {
+    public String insert(T value) {
         root = insert(root, value);
+        return "Valor '" + value + "' adicionado à árvore.";
     }
 
     private Node insert(Node node, T value) {
@@ -100,8 +104,12 @@ class AVLTree<T extends Comparable<T>> {
     }
 
     // Remover um valor da árvore
-    public void remove(T value) {
+    public String remove(T value) {
+        if (!contains(value)) {
+            return "Valor '" + value + "' não encontrado na árvore.";
+        }
         root = remove(root, value);
+        return "Valor '" + value + "' removido da árvore.";
     }
 
     private Node remove(Node node, T value) {
@@ -128,10 +136,6 @@ class AVLTree<T extends Comparable<T>> {
             }
         }
 
-        if (node == null) {
-            return null;
-        }
-
         node.height = Math.max(height(node.left), height(node.right)) + 1;
         int balance = getBalance(node);
 
@@ -156,6 +160,24 @@ class AVLTree<T extends Comparable<T>> {
         return node;
     }
 
+    // Verifica se a árvore contém um valor
+    public boolean contains(T value) {
+        return contains(root, value);
+    }
+
+    private boolean contains(Node node, T value) {
+        if (node == null) {
+            return false;
+        }
+        if (value.compareTo(node.value) < 0) {
+            return contains(node.left, value);
+        } else if (value.compareTo(node.value) > 0) {
+            return contains(node.right, value);
+        } else {
+            return true;
+        }
+    }
+
     // Encontrar o nó com o menor valor (para remoção)
     private Node getMinValueNode(Node node) {
         Node current = node;
@@ -165,16 +187,24 @@ class AVLTree<T extends Comparable<T>> {
         return current;
     }
 
-    // Exibir a árvore em ordem
-    public void displayInOrder() {
-        displayInOrder(root);
+    // Retorna a lista de valores em ordem
+    public List<T> getInOrder() {
+        List<T> result = new ArrayList<>();
+        inOrderTraversal(root, result);
+        return result;
     }
 
-    private void displayInOrder(Node node) {
+    private void inOrderTraversal(Node node, List<T> result) {
         if (node != null) {
-            displayInOrder(node.left);
-            System.out.print(node.value + " ");
-            displayInOrder(node.right);
+            inOrderTraversal(node.left, result);
+            result.add(node.value);
+            inOrderTraversal(node.right, result);
         }
+    }
+
+    // Exibir valores como String formatada
+    public String displayInOrder() {
+        List<T> values = getInOrder();
+        return values.isEmpty() ? "A árvore está vazia." : String.join(", ", values.toString());
     }
 }
