@@ -5,21 +5,23 @@ import so.gbrl.exceptions.CommandNotFoundException;
 import so.gbrl.exceptions.SoException;
 import so.gbrl.files.Directory;
 import so.gbrl.files.Journal;
+import so.gbrl.utils.IOUtil;
 import so.gbrl.utils.ReflectionUtil;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
 
 public class FileSystemSimulator {
-    public static final Directory ROOT = new Directory("ROOT", null);
-    public static Directory CURRENT_DIRECTORY = ROOT;
     private static final Journal JOURNAL = new Journal();
+    public static Directory ROOT;
+    public static Directory CURRENT_DIRECTORY;
 
-    public static void main(String[] args) {
-        new Directory("dir1", CURRENT_DIRECTORY);
-        new Directory("dir2", CURRENT_DIRECTORY);
-        new Directory("dir3", CURRENT_DIRECTORY);
+    public static void main(String[] args) throws IOException, URISyntaxException {
+        IOUtil.updateMemory();
+        CURRENT_DIRECTORY = ROOT;
 
         Scanner scanner = new Scanner(System.in);
         boolean isBreak = false;
@@ -42,10 +44,6 @@ public class FileSystemSimulator {
                 System.out.println(SoException.UNEXPECTED_ERROR);
             }
         }
-    }
-
-    public static void save(){
-
     }
 
     private static Boolean executeInput(String input) throws Exception {

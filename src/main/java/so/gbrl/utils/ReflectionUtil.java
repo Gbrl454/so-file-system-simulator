@@ -11,8 +11,10 @@ public class ReflectionUtil {
 
         if (files != null) {
             for (File file : files) {
-                if (file.isDirectory()) classes.addAll(findClassesInDirectory(file, packageName + "." + file.getName()));
-                else if (file.getName().endsWith(".class")) classes.add(Class.forName(packageName + "." + file.getName().substring(0, file.getName().length() - 6)));
+                if (file.isDirectory())
+                    classes.addAll(findClassesInDirectory(file, packageName + "." + file.getName()));
+                else if (file.getName().endsWith(".class"))
+                    classes.add(Class.forName(packageName + "." + file.getName().substring(0, file.getName().length() - 6)));
             }
         }
         return classes;
