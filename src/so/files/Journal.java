@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 public class Journal {
-
     private final List<String> log;
 
     public Journal() {

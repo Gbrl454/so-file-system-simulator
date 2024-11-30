@@ -27,7 +27,7 @@ public abstract class FileSystemBase<T> {
                     case String s -> "\"" + s + "\"";
                     case Number n -> n.toString();
                     case List<?> list ->
-                            "[" + list.stream().map(item -> item instanceof String ? "\"" + item + "\"" : toJson(item)).toList() + "]";
+                             list.stream().map(item -> item instanceof String ? "\"" + item + "\"" : toJson(item)).toList().toString();
                     case Directory dir -> "{" + toJson(dir) + "}";
                     case File file -> "{" + toJson(file) + "}";
                     case null, default -> "null";
@@ -38,7 +38,7 @@ public abstract class FileSystemBase<T> {
             }
         }
 
-        return "{" + String.join(",", fields) + "}";
+        return "{\"type\":\""+clazz.getName()+"\"," + String.join(",", fields) + "}";
     }
 
     public String toJson() {
