@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class FileSystemBase<T> {
     public final String name;
-    public final List<T> content;
+    public final List<T> content; // TODO trocar para arvore AVL
 
     protected FileSystemBase(String name, List<T> content) {
         this.name = name;

@@ -27,4 +27,8 @@ public class Directory extends FileSystemBase<FileSystemBase<?>> {
 
         return "~/" + path;
     }
+
+    public Directory getDirectoryParent() {
+        return directoryParent;
+    }
 }
