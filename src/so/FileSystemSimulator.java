@@ -16,9 +16,7 @@ public class FileSystemSimulator {
     public static Directory CURRENT_DIRECTORY = ROOT;
 
     public static void main(String[] args) {
-        Directory dir1 = new Directory("dir1", CURRENT_DIRECTORY);
-        Directory dir2 = new Directory("dir2", dir1);
-        Directory dir3 = new Directory("dir3", dir2);
+        new Directory("dir3", new Directory("dir2", new Directory("dir1", CURRENT_DIRECTORY)));
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -26,7 +24,9 @@ public class FileSystemSimulator {
                 System.out.print(CURRENT_DIRECTORY.getPath() + " ");
                 String input = scanner.nextLine();
                 if (Objects.equals("exit", input)) break;
-                if (input != null && !input.isBlank()) executeInput(input);
+                if (input != null && !input.isBlank()) {
+                    for (String inputPart : input.split("&")) executeInput(inputPart.stripIndent());
+                }
             } catch (SoException e) {
                 System.out.println(e.getMessage());
             } catch (Exception e) {
@@ -49,9 +49,10 @@ public class FileSystemSimulator {
                     for (Class<?> clazz : ReflectionUtil.findClassesInDirectory(directory, commandsPackageName).stream().filter(it -> it.getSuperclass() == CommandBase.class).toList()) {
                         Object instance = clazz.getDeclaredConstructor().newInstance();
                         boolean result = (boolean) clazz.getMethod("compare", String.class).invoke(instance, input);
-                        if (!result) throw new CommandNotFoundException(input);
+                        if (result) return;
                     }
                 }
+                throw new CommandNotFoundException(input);
             }
         }
     }
