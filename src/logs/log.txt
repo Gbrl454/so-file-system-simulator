@@ -1,0 +1,4 @@
+Sat Nov 30 17:03:12 BRT 2024 - Sistema iniciado.
+Sat Nov 30 17:03:26 BRT 2024 - Executando comando: cd ./dir1
+Sat Nov 30 17:03:26 BRT 2024 - Comando executado com sucesso: cd ./dir1
+Sat Nov 30 17:03:30 BRT 2024 - Comando 'exit' recebido. Encerrando o sistema.
