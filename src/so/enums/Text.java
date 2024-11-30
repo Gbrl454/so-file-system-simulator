@@ -1,4 +1,4 @@
-package enums;
+package so.enums;
 
 
 public class Text {
