@@ -17,7 +17,7 @@ public class SimpleLs extends CommandBase {
     public void run(Matcher matcher) {
         System.out.println(String.join("\t\t\t", FileSystemSimulator.CURRENT_DIRECTORY.content.stream().map(it -> switch (it) {
             case Directory dir -> Text.Color.AZUL.apply(dir.name);
-            case File file -> file.name;
+            case File file -> file.name + "." + file.extension;
             default -> "";
         }).toList()));
     }

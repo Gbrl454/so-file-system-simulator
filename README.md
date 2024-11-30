@@ -30,3 +30,9 @@
 | Comando |               Ação                |
 |:-------:|:---------------------------------:|
 |   ls    | Mostra os arquivos da pasta atual |
+
+### Visualizar arquivo
+
+|   Comando    |                 Ação                  |
+|:------------:|:-------------------------------------:|
+| cat file.ext | Mostra o conteúdo do arquivo file.ext |

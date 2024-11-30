@@ -11,4 +11,8 @@ public class File extends FileSystemBase<String> {
         if (directory != null) directory.content.add(this);
         else throw new RuntimeException("Um arquivo deve ser criado dentro de uma pasta!");
     }
+
+    public String getFileNameWithExtension() {
+        return this.name + "." + this.extension;
+    }
 }
