@@ -1,8 +1,7 @@
-package so.command;
+package so.gbrl.command;
 
-import so.exceptions.SoException;
+import so.gbrl.exceptions.SoException;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +15,6 @@ public abstract class CommandBase {
     public boolean compare(String input) {
         Matcher matcher = Pattern.compile(REGEX).matcher(input.trim());
         if (matcher.matches()) {
-
-
             try {
                 run(matcher);
             } catch (SoException e) {
@@ -26,11 +23,6 @@ public abstract class CommandBase {
                 e.printStackTrace();
                 System.out.println(SoException.UNEXPECTED_ERROR);
             }
-
-
-
-
-
             return true;
         }
         return false;

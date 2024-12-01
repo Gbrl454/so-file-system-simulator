@@ -1,7 +1,7 @@
-package so.exceptions;
+package so.gbrl.exceptions;
 
-import so.FileSystemSimulator;
-import so.enums.Text;
+import so.gbrl.FileSystemSimulator;
+import so.gbrl.enums.Text;
 
 public class DirectoryNotFoundException extends SoException {
     public DirectoryNotFoundException(String directoryName) {

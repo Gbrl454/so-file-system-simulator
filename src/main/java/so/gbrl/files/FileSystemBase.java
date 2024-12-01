@@ -1,4 +1,4 @@
-package so.files;
+package so.gbrl.files;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class FileSystemBase<T> {
     public final String name;
-    public final List<T> content;
+    public final List<T> content; // TODO trocar para arvore AVL
 
     protected FileSystemBase(String name, List<T> content) {
         this.name = name;
@@ -27,7 +27,7 @@ public abstract class FileSystemBase<T> {
                     case String s -> "\"" + s + "\"";
                     case Number n -> n.toString();
                     case List<?> list ->
-                            "[" + list.stream().map(item -> item instanceof String ? "\"" + item + "\"" : toJson(item)).toList() + "]";
+                            list.stream().map(item -> item instanceof String ? "\"" + item + "\"" : toJson(item)).toList().toString();
                     case Directory dir -> "{" + toJson(dir) + "}";
                     case File file -> "{" + toJson(file) + "}";
                     case null, default -> "null";
@@ -38,7 +38,7 @@ public abstract class FileSystemBase<T> {
             }
         }
 
-        return "{" + String.join(",", fields) + "}";
+        return "{\"type\":\"" + clazz.getName() + "\"," + String.join(",", fields) + "}";
     }
 
     public String toJson() {

@@ -1,0 +1,32 @@
+{
+  "type": "so.gbrl.files.Directory",
+  "name": "ROOT",
+  "content": [
+    {
+      "type": "so.gbrl.files.Directory",
+      "name": "dir1",
+      "content": []
+    },
+    {
+      "type": "so.gbrl.files.Directory",
+      "name": "dir3",
+      "content": []
+    },
+    {
+      "type": "so.gbrl.files.Directory",
+      "name": "dir2",
+      "content": [
+        {
+          "type": "so.gbrl.files.File",
+          "extension": "txt",
+          "name": "f1",
+          "content": [
+            "teste",
+            "oi",
+            "jhgdfg"
+          ]
+        }
+      ]
+    }
+  ]
+}

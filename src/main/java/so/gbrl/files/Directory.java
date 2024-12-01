@@ -1,4 +1,4 @@
-package so.files;
+package so.gbrl.files;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,10 @@ public class Directory extends FileSystemBase<FileSystemBase<?>> {
         return content.stream().filter(it -> it instanceof Directory).map(it -> (Directory) it).toList();
     }
 
+    public List<File> getFiles() {
+        return content.stream().filter(it -> it instanceof File).map(it -> (File) it).toList();
+    }
+
     public String getPath() {
         StringBuilder path = new StringBuilder();
         Directory directory = this;
@@ -26,5 +30,9 @@ public class Directory extends FileSystemBase<FileSystemBase<?>> {
         }
 
         return "~/" + path;
+    }
+
+    public Directory getDirectoryParent() {
+        return directoryParent;
     }
 }
