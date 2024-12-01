@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileSystemSimulator {
@@ -23,48 +24,55 @@ public class FileSystemSimulator {
         IOUtil.updateMemory();
         CURRENT_DIRECTORY = ROOT;
 
-        Scanner scanner = new Scanner(System.in);
-        boolean isBreak = false;
-        while (!isBreak) {
-            try {
-                System.out.print(CURRENT_DIRECTORY.getPath() + " ");
-                String input = scanner.nextLine();
-                if (input != null && !input.isBlank()) {
-                    for (String inputPart : input.split("&")) {
-                        if (!executeInput(inputPart.stripIndent())) {
-                            isBreak = true;
-                            break;
+        try (Scanner scanner = new Scanner(System.in)) {
+            boolean isBreak = false;
+            while (!isBreak) {
+                try {
+                    System.out.print(CURRENT_DIRECTORY.getPath() + " ");
+                    String input = scanner.nextLine().trim();
+                    if (!input.isEmpty()) {
+                        // Process each input part separated by '&'
+                        for (String inputPart : input.split("&")) {
+                            if (!executeInput(inputPart.trim())) {
+                                isBreak = true;
+                                break;
+                            }
                         }
                     }
+                } catch (SoException e) {
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(SoException.UNEXPECTED_ERROR);
                 }
-            } catch (SoException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(SoException.UNEXPECTED_ERROR);
             }
         }
     }
 
-    private static Boolean executeInput(String input) throws Exception {
-        if (input.equals("exit")) return false;
-        String commandsPackageName = "so.gbrl.command." + input.split(" ")[0];
+    private static boolean executeInput(String input) throws Exception {
+        if (input.equalsIgnoreCase("exit")) return false;
+
+        String commandName = input.split(" ")[0];
+        String commandsPackageName = "so.gbrl.command." + commandName;
         URL commandsPackageUrl = ClassLoader.getSystemClassLoader().getResource(commandsPackageName.replace('.', '/'));
 
-        if (commandsPackageUrl == null || commandsPackageUrl.getProtocol() == null)
+        if (commandsPackageUrl == null || commandsPackageUrl.getProtocol() == null) {
             throw new CommandNotFoundException(input);
-        else {
-            if (commandsPackageUrl.getProtocol().equals("file")) {
-                File directory = new File(commandsPackageUrl.toURI());
-                if (directory.exists() && directory.isDirectory()) {
-                    for (Class<?> clazz : ReflectionUtil.findClassesInDirectory(directory, commandsPackageName).stream().filter(it -> it.getSuperclass() == CommandBase.class).toList()) {
+        }
+
+        if (commandsPackageUrl.getProtocol().equals("file")) {
+            File directory = new File(commandsPackageUrl.toURI());
+            if (directory.exists() && directory.isDirectory()) {
+                List<Class<?>> commandClasses = ReflectionUtil.findClassesInDirectory(directory, commandsPackageName);
+                for (Class<?> clazz : commandClasses) {
+                    if (CommandBase.class.isAssignableFrom(clazz)) {
                         Object instance = clazz.getDeclaredConstructor().newInstance();
                         boolean result = (boolean) clazz.getMethod("compare", String.class).invoke(instance, input);
                         if (result) return true;
                     }
                 }
-                throw new CommandNotFoundException(input);
             }
+            throw new CommandNotFoundException(input);
         }
         return false;
     }

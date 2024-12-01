@@ -4,13 +4,25 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FileSystemBase<T> {
+public abstract class FileSystemBase<T extends Comparable<T>> implements Comparable<FileSystemBase<?>> {
     public final String name;
-    public final List<T> content; // TODO trocar para arvore AVL
+    public final AVLTree<T> content;
 
-    protected FileSystemBase(String name, List<T> content) {
+    protected FileSystemBase(String name) {
         this.name = name;
-        this.content = content;
+        this.content = new AVLTree<>();
+    }
+
+    public void addContent(T item) {
+        content.insert(item);
+    }
+
+    public boolean hasContent(T item) {
+        return content.contains(item);
+    }
+
+    public List<T> listContent() {
+        return content.toList();
     }
 
     private static String toJson(Object obj) {

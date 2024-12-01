@@ -1,23 +1,28 @@
 package so.gbrl.files;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Directory extends FileSystemBase<FileSystemBase<?>> {
     private final Directory directoryParent;
 
     public Directory(String name, Directory directory) {
-        super(name, new ArrayList<>());
+        super(name);
         this.directoryParent = directory;
-        if (directory != null) directory.content.add(this);
+        if (directory != null) directory.content.insert(this);
     }
 
     public List<Directory> getDirectories() {
-        return content.stream().filter(it -> it instanceof Directory).map(it -> (Directory) it).toList();
+        return content.toList().stream()
+                .filter(it -> it instanceof Directory)
+                .map(it -> (Directory) it)
+                .toList();
     }
 
     public List<File> getFiles() {
-        return content.stream().filter(it -> it instanceof File).map(it -> (File) it).toList();
+        return content.toList().stream()
+                .filter(it -> it instanceof File)
+                .map(it -> (File) it)
+                .toList();
     }
 
     public String getPath() {
@@ -34,5 +39,10 @@ public class Directory extends FileSystemBase<FileSystemBase<?>> {
 
     public Directory getDirectoryParent() {
         return directoryParent;
+    }
+
+    @Override
+    public int compareTo(FileSystemBase<?> o) {
+        return 0;
     }
 }
