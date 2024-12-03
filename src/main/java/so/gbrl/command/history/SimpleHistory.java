@@ -15,7 +15,7 @@ public class SimpleHistory extends CommandBase {
     @Override
     public void run(Matcher matcher) {
         for (int i = 0; i < HISTORY_COMMANDS.size(); i++) {
-            println((i + 1) + " - " + HISTORY_COMMANDS.get(i));
+            println((i + 1) + " " + HISTORY_COMMANDS.get(i));
         }
     }
 

@@ -12,17 +12,11 @@ public class Directory extends FileSystemBase<FileSystemBase<?>> {
     }
 
     public List<Directory> getDirectories() {
-        return this.listContent().stream()
-                .filter(it -> it instanceof Directory)
-                .map(it -> (Directory) it)
-                .toList();
+        return this.listContent().stream().filter(Directory.class::isInstance).map(it -> (Directory) it).toList();
     }
 
     public List<File> getFiles() {
-        return this.listContent().stream()
-                .filter(it -> it instanceof File)
-                .map(it -> (File) it)
-                .toList();
+        return this.listContent().stream().filter(File.class::isInstance).map(it -> (File) it).toList();
     }
 
     public String getPath() {

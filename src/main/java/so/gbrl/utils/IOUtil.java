@@ -13,15 +13,18 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import static so.gbrl.FileSystemSimulator.println;
+
 @SuppressWarnings("unchecked")
 public class IOUtil {
-    public static void updateMemory() throws IOException, URISyntaxException {
-        try (InputStream inputStream = IOUtil.class.getClassLoader().getResourceAsStream("memory.json")) {
+    private static final String MEMORY_FILE = "memory.json";
+
+    public static void updateMemory() throws IOException {
+        try (InputStream inputStream = IOUtil.class.getClassLoader().getResourceAsStream(MEMORY_FILE)) {
             if (inputStream == null) {
                 throw new SoException("Arquivo de mémoria não encontrado.");
             }
@@ -33,11 +36,21 @@ public class IOUtil {
     }
 
     public static void updateMemoryFile() throws IOException, URISyntaxException {
-        URL resourceUrl = FileSystemSimulator.class.getClassLoader().getResource("memory.json");
+        URL resourceUrl = FileSystemSimulator.class.getClassLoader().getResource(MEMORY_FILE);
         if (resourceUrl == null) throw new SoException("Arquivo de mémoria não foi encontrado.");
-        Path resourcePath = Paths.get(resourceUrl.toURI());
-        Files.writeString(resourcePath, FileSystemSimulator.ROOT.toJson());
+        Files.writeString(Paths.get(resourceUrl.toURI()), FileSystemSimulator.ROOT.toJson());
         updateMemory();
+    }
+
+    public static void refreshMemory() {
+        try {
+            updateMemoryFile();
+            updateMemory();
+        } catch (SoException e) {
+            println(e.getMessage());
+        } catch (Exception e) {
+            println(SoException.UNEXPECTED_ERROR);
+        }
     }
 
     public static FileSystemBase<?> mapToFileSystem(Map<String, Object> map, Directory directory) {

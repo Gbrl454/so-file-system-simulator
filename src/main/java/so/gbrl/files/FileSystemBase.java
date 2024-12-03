@@ -13,18 +13,6 @@ public abstract class FileSystemBase<T extends Comparable<T>> implements Compara
         this.content = new ArrayList<>();
     }
 
-    public void addContent(T item) {
-        content.add(item);
-    }
-
-    public boolean hasContent(T item) {
-        return content.contains(item);
-    }
-
-    public List<T> listContent() {
-        return content;
-    }
-
     private static String toJson(Object obj) {
         if (obj == null) return null;
         Class<?> clazz = obj.getClass();
@@ -51,6 +39,18 @@ public abstract class FileSystemBase<T extends Comparable<T>> implements Compara
         }
 
         return "{\"type\":\"" + clazz.getName() + "\"," + String.join(",", fields) + "}";
+    }
+
+    public void addContent(T item) {
+        this.content.add(item);
+    }
+
+    public boolean hasContent(T item) {
+        return this.content.contains(item);
+    }
+
+    public List<T> listContent() {
+        return this.content;
     }
 
     public String toJson() {
