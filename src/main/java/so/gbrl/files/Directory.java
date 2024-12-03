@@ -8,18 +8,18 @@ public class Directory extends FileSystemBase<FileSystemBase<?>> {
     public Directory(String name, Directory directory) {
         super(name);
         this.directoryParent = directory;
-        if (directory != null) directory.content.insert(this);
+        if (directory != null) directory.addContent(this);
     }
 
     public List<Directory> getDirectories() {
-        return content.toList().stream()
+        return this.listContent().stream()
                 .filter(it -> it instanceof Directory)
                 .map(it -> (Directory) it)
                 .toList();
     }
 
     public List<File> getFiles() {
-        return content.toList().stream()
+        return this.listContent().stream()
                 .filter(it -> it instanceof File)
                 .map(it -> (File) it)
                 .toList();

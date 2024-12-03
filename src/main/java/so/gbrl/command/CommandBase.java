@@ -29,4 +29,6 @@ public abstract class CommandBase {
     }
 
     public abstract void run(Matcher matcher);
+
+    public abstract String help();
 }

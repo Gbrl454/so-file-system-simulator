@@ -15,4 +15,9 @@ public class MultipleCd extends CommandBase {
         Directory directory = SimpleCd.getCdDirectory(matcher.group(1).trim());
         for (String dir : matcher.group(2).split("/")) directory = SimpleCd.gotoDirectory(dir, directory);
     }
+
+    @Override
+    public String help() {
+        return "TODO";
+    }
 }

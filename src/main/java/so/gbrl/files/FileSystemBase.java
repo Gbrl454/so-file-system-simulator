@@ -6,15 +6,15 @@ import java.util.List;
 
 public abstract class FileSystemBase<T extends Comparable<T>> implements Comparable<FileSystemBase<?>> {
     public final String name;
-    public final AVLTree<T> content;
+    public List<T> content;
 
     protected FileSystemBase(String name) {
         this.name = name;
-        this.content = new AVLTree<>();
+        this.content = new ArrayList<>();
     }
 
     public void addContent(T item) {
-        content.insert(item);
+        content.add(item);
     }
 
     public boolean hasContent(T item) {
@@ -22,7 +22,7 @@ public abstract class FileSystemBase<T extends Comparable<T>> implements Compara
     }
 
     public List<T> listContent() {
-        return content.toList();
+        return content;
     }
 
     private static String toJson(Object obj) {

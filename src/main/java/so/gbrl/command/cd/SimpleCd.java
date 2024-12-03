@@ -38,4 +38,9 @@ public class SimpleCd extends CommandBase {
         Directory directory = getCdDirectory(matcher.group(1).trim());
         gotoDirectory(directoryName, directory);
     }
+
+    @Override
+    public String help() {
+        return "TODO";
+    }
 }

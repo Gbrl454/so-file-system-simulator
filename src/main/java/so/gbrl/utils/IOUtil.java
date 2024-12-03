@@ -8,7 +8,10 @@ import so.gbrl.files.File;
 import so.gbrl.files.FileSystemBase;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,15 +21,21 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class IOUtil {
     public static void updateMemory() throws IOException, URISyntaxException {
-        Path path = Paths.get(ClassLoader.getSystemResource("memory.json").toURI());
-        String json = Files.readString(path);
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = objectMapper.readValue(json, Map.class);
-        FileSystemSimulator.ROOT = (Directory) mapToFileSystem(map, null);
+        try (InputStream inputStream = IOUtil.class.getClassLoader().getResourceAsStream("memory.json")) {
+            if (inputStream == null) {
+                throw new SoException("Arquivo de mémoria não encontrado.");
+            }
+            String json = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> map = objectMapper.readValue(json, Map.class);
+            FileSystemSimulator.ROOT = (Directory) mapToFileSystem(map, null);
+        }
     }
 
     public static void updateMemoryFile() throws IOException, URISyntaxException {
-        Path resourcePath = Paths.get("src/main/resources/memory.json");
+        URL resourceUrl = FileSystemSimulator.class.getClassLoader().getResource("memory.json");
+        if (resourceUrl == null) throw new SoException("Arquivo de mémoria não foi encontrado.");
+        Path resourcePath = Paths.get(resourceUrl.toURI());
         Files.writeString(resourcePath, FileSystemSimulator.ROOT.toJson());
         updateMemory();
     }

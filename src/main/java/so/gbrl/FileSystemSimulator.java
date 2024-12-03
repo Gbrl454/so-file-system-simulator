@@ -4,23 +4,39 @@ import so.gbrl.command.CommandBase;
 import so.gbrl.exceptions.CommandNotFoundException;
 import so.gbrl.exceptions.SoException;
 import so.gbrl.files.Directory;
-import so.gbrl.files.Journal;
 import so.gbrl.utils.IOUtil;
 import so.gbrl.utils.ReflectionUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class FileSystemSimulator {
-    private static final Journal JOURNAL = new Journal();
+    //    private static final Journal JOURNAL = new Journal();
     public static Directory ROOT;
     public static Directory CURRENT_DIRECTORY;
+    public static List<String> TERMINAL = new ArrayList<>();
+    public static List<String> HISTORY_COMMANDS = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void print(String string) {
+        TERMINAL.add(string);
+    }
+
+    public static void println(String string) {
+        if (string != null) print(string + "\n");
+        else print("\n");
+    }
+
+    private static void updateTerminal() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        for (String s : TERMINAL)
+            System.out.print(s);
+    }
+
+    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
         IOUtil.updateMemory();
         CURRENT_DIRECTORY = ROOT;
 
@@ -28,22 +44,23 @@ public class FileSystemSimulator {
             boolean isBreak = false;
             while (!isBreak) {
                 try {
-                    System.out.print(CURRENT_DIRECTORY.getPath() + " ");
+                    print(CURRENT_DIRECTORY.getPath() + " ");
+                    updateTerminal();
                     String input = scanner.nextLine().trim();
-                    if (!input.isEmpty()) {
+                    if (!input.isBlank()) {
+                        println(input);
                         // Process each input part separated by '&'
                         for (String inputPart : input.split("&")) {
                             if (!executeInput(inputPart.trim())) {
                                 isBreak = true;
                                 break;
-                            }
+                            } else HISTORY_COMMANDS.add(input);
                         }
-                    }
+                    } else println(null);
                 } catch (SoException e) {
-                    System.out.println(e.getMessage());
+                    println(e.getMessage());
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println(SoException.UNEXPECTED_ERROR);
+                    println(SoException.UNEXPECTED_ERROR);
                 }
             }
         }
@@ -52,24 +69,13 @@ public class FileSystemSimulator {
     private static boolean executeInput(String input) throws Exception {
         if (input.equalsIgnoreCase("exit")) return false;
 
-        String commandName = input.split(" ")[0];
-        String commandsPackageName = "so.gbrl.command." + commandName;
-        URL commandsPackageUrl = ClassLoader.getSystemClassLoader().getResource(commandsPackageName.replace('.', '/'));
-
-        if (commandsPackageUrl == null || commandsPackageUrl.getProtocol() == null) {
-            throw new CommandNotFoundException(input);
-        }
-
-        if (commandsPackageUrl.getProtocol().equals("file")) {
-            File directory = new File(commandsPackageUrl.toURI());
-            if (directory.exists() && directory.isDirectory()) {
-                List<Class<?>> commandClasses = ReflectionUtil.findClassesInDirectory(directory, commandsPackageName);
-                for (Class<?> clazz : commandClasses) {
-                    if (CommandBase.class.isAssignableFrom(clazz)) {
-                        Object instance = clazz.getDeclaredConstructor().newInstance();
-                        boolean result = (boolean) clazz.getMethod("compare", String.class).invoke(instance, input);
-                        if (result) return true;
-                    }
+        List<Class<?>> commandClasses = ReflectionUtil.getCommandClasses(input);
+        if (commandClasses != null) {
+            for (Class<?> clazz : commandClasses) {
+                if (CommandBase.class.isAssignableFrom(clazz)) {
+                    Object instance = clazz.getDeclaredConstructor().newInstance();
+                    boolean result = (boolean) clazz.getMethod("compare", String.class).invoke(instance, input);
+                    if (result) return true;
                 }
             }
             throw new CommandNotFoundException(input);

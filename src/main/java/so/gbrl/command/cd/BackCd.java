@@ -17,4 +17,9 @@ public class BackCd extends CommandBase {
             throw new SoException("Você já se encontra no diretório ROOT do sistema.");
         FileSystemSimulator.CURRENT_DIRECTORY = FileSystemSimulator.CURRENT_DIRECTORY.getDirectoryParent();
     }
+
+    @Override
+    public String help() {
+        return "TODO";
+    }
 }

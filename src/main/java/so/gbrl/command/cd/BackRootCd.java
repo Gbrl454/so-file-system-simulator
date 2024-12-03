@@ -14,4 +14,9 @@ public class BackRootCd extends CommandBase {
     public void run(Matcher matcher) {
         FileSystemSimulator.CURRENT_DIRECTORY = FileSystemSimulator.ROOT;
     }
+
+    @Override
+    public String help() {
+        return "TODO";
+    }
 }

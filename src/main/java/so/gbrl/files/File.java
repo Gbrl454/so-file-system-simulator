@@ -5,10 +5,11 @@ import java.util.List;
 public class File extends FileSystemBase<String> {
     public String extension;
 
-    public File(String name, String extension,List<String> content, Directory directory) {
+    public File(String name, String extension, List<String> content, Directory directory) {
         super(name);
         this.extension = extension;
-        if (directory != null) directory.content.insert(this);
+        this.content = content;
+        if (directory != null) directory.addContent(this);
         else throw new RuntimeException("Um arquivo deve ser criado dentro de uma pasta!");
     }
 
