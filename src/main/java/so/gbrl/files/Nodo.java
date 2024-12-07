@@ -2,12 +2,12 @@ package so.gbrl.files;
 
 public class Nodo {
     String nome;
-    boolean isFolder; // true se for pasta, false se for arquivo
-    String conteudo; // Apenas para arquivos
+    boolean isFolder;
+    String conteudo;
     Nodo left;
     Nodo right;
     int height;
-    AVLTree subTree; // Sub-árvore para o conteúdo das pastas
+    AVLTree subTree;
 
     public Nodo(String nome, boolean isFolder) {
         this.nome = nome;

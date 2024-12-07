@@ -20,17 +20,14 @@ public class AVLTree<T extends Comparable<T>> implements Iterable<T> {
     private AVLNode<T> root;
     private int size;
 
-    // Retorna a altura de um nó
     private int height(AVLNode<T> node) {
         return node == null ? 0 : node.height;
     }
 
-    // Calcula o balanceamento de um nó
     private int getBalance(AVLNode<T> node) {
         return node == null ? 0 : height(node.left) - height(node.right);
     }
 
-    // Rotação à direita
     private AVLNode<T> rotateRight(AVLNode<T> y) {
         AVLNode<T> x = y.left;
         AVLNode<T> T2 = x.right;
@@ -44,7 +41,6 @@ public class AVLTree<T extends Comparable<T>> implements Iterable<T> {
         return x;
     }
 
-    // Rotação à esquerda
     private AVLNode<T> rotateLeft(AVLNode<T> x) {
         AVLNode<T> y = x.right;
         AVLNode<T> T2 = y.left;
@@ -58,7 +54,6 @@ public class AVLTree<T extends Comparable<T>> implements Iterable<T> {
         return y;
     }
 
-    // Insere um valor na árvore
     public void insert(T data) {
         root = insert(root, data);
         size++;
@@ -72,8 +67,8 @@ public class AVLTree<T extends Comparable<T>> implements Iterable<T> {
         } else if (data.compareTo(node.data) > 0) {
             node.right = insert(node.right, data);
         } else {
-            size--; // Evita contar duplicados
-            return node; // Duplicados não são permitidos
+            size--;
+            return node;
         }
 
         node.height = Math.max(height(node.left), height(node.right)) + 1;
@@ -98,7 +93,6 @@ public class AVLTree<T extends Comparable<T>> implements Iterable<T> {
         return node;
     }
 
-    // Verifica se um valor está presente
     public boolean contains(T data) {
         return contains(root, data);
     }
@@ -110,7 +104,6 @@ public class AVLTree<T extends Comparable<T>> implements Iterable<T> {
         return contains(node.right, data);
     }
 
-    // Realiza a travessia in-order e preenche uma lista
     private void inOrderTraversal(AVLNode<T> node, List<T> result) {
         if (node != null) {
             inOrderTraversal(node.left, result);
@@ -119,24 +112,20 @@ public class AVLTree<T extends Comparable<T>> implements Iterable<T> {
         }
     }
 
-    // Retorna uma lista dos elementos da árvore em ordem
     public List<T> toList() {
         List<T> result = new ArrayList<>();
         inOrderTraversal(root, result);
         return result;
     }
 
-    // Retorna o tamanho da árvore
     public int size() {
         return size;
     }
 
-    // Verifica se a árvore está vazia
     public boolean isEmpty() {
         return size == 0;
     }
 
-    // Implementação do Iterable<T> para suporte ao for-each
     @Override
     public Iterator<T> iterator() {
         return toList().iterator();

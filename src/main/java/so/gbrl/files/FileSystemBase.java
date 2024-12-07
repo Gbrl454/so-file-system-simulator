@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FileSystemBase<T extends Comparable<T>> implements Comparable<FileSystemBase<?>> {
-    public final String name;
+    public String name;
     public List<T> content;
 
     protected FileSystemBase(String name) {

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileSystemSimulator {
-    //    private static final Journal JOURNAL = new Journal();
     public static Directory ROOT;
     public static Directory CURRENT_DIRECTORY;
     public static List<String> TERMINAL = new ArrayList<>();
@@ -49,7 +48,6 @@ public class FileSystemSimulator {
                     String input = scanner.nextLine().trim();
                     if (!input.isBlank()) {
                         println(input);
-                        // Process each input part separated by '&'
                         for (String inputPart : input.split("&")) {
                             if (!executeInput(inputPart.trim())) {
                                 isBreak = true;

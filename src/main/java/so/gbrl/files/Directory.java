@@ -39,4 +39,13 @@ public class Directory extends FileSystemBase<FileSystemBase<?>> {
     public int compareTo(FileSystemBase<?> o) {
         return 0;
     }
+    public boolean removeContent(Object content) {
+        List<FileSystemBase<?>> contentList = this.listContent();
+
+        if (content instanceof File || content instanceof Directory) {
+            return contentList.remove(content);
+        }
+
+        return false;
+    }
 }
