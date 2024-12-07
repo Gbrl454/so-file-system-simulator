@@ -5,6 +5,8 @@ import so.gbrl.exceptions.SoException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static so.gbrl.FileSystemSimulator.println;
+
 public abstract class CommandBase {
     private final String REGEX;
 
@@ -18,10 +20,9 @@ public abstract class CommandBase {
             try {
                 run(matcher);
             } catch (SoException e) {
-                System.out.println(e.getMessage());
+                println(e.getMessage());
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(SoException.UNEXPECTED_ERROR);
+                println(SoException.UNEXPECTED_ERROR);
             }
             return true;
         }

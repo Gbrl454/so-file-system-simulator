@@ -35,7 +35,7 @@ public class FileSystemSimulator {
             System.out.print(s);
     }
 
-    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         IOUtil.updateMemory();
         CURRENT_DIRECTORY = ROOT;
 

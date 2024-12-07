@@ -13,7 +13,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
@@ -21,31 +23,34 @@ import static so.gbrl.FileSystemSimulator.println;
 
 @SuppressWarnings("unchecked")
 public class IOUtil {
-    private static final String MEMORY_FILE = "memory.json";
+    private static final String MEMORY_FILE = "src/main/resources/memory.json";
 
     public static void updateMemory() throws IOException {
-        try (InputStream inputStream = IOUtil.class.getClassLoader().getResourceAsStream(MEMORY_FILE)) {
-            if (inputStream == null) {
-                throw new SoException("Arquivo de mémoria não encontrado.");
-            }
-            String json = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        Path path = Path.of(MEMORY_FILE);
+        if (!Files.exists(path)) {
+            FileSystemSimulator.ROOT =  new Directory("ROOT", null);
+            updateMemoryFile();
+        } else {
+            String json = Files.readString(path, StandardCharsets.UTF_8);
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> map = objectMapper.readValue(json, Map.class);
-            FileSystemSimulator.ROOT = (Directory) mapToFileSystem(map, null);
+            FileSystemSimulator.ROOT  = (Directory) mapToFileSystem(map, null);
         }
     }
 
-    public static void updateMemoryFile() throws IOException, URISyntaxException {
-        URL resourceUrl = FileSystemSimulator.class.getClassLoader().getResource(MEMORY_FILE);
-        if (resourceUrl == null) throw new SoException("Arquivo de mémoria não foi encontrado.");
-        Files.writeString(Paths.get(resourceUrl.toURI()), FileSystemSimulator.ROOT.toJson());
-        updateMemory();
+    public static void updateMemoryFile() throws IOException {
+        Path path = Path.of(MEMORY_FILE);
+        Files.createDirectories(path.getParent());
+
+        Files.writeString(path,
+                FileSystemSimulator.ROOT.toJson(),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING);
     }
 
     public static void refreshMemory() {
         try {
             updateMemoryFile();
-            updateMemory();
         } catch (SoException e) {
             println(e.getMessage());
         } catch (Exception e) {

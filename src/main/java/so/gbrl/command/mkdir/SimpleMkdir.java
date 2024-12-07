@@ -12,7 +12,7 @@ import static so.gbrl.FileSystemSimulator.println;
 
 public class SimpleMkdir extends CommandBase {
     public SimpleMkdir() {
-        super("^mkdir ('[^']*'|[^'/ ]+)$");
+        super("^mkdir (('[^']*'|[^'/ ]+))$");
     }
 
     public static boolean makeDirectory(String directoryName) {
@@ -21,6 +21,7 @@ public class SimpleMkdir extends CommandBase {
         }
 
         new Directory(directoryName, FileSystemSimulator.CURRENT_DIRECTORY);
+        IOUtil.refreshMemory();
         return true;
     }
 

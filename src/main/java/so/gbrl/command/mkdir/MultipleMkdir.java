@@ -12,7 +12,7 @@ import static so.gbrl.FileSystemSimulator.println;
 
 public class MultipleMkdir extends CommandBase {
     public MultipleMkdir() {
-        super("^mkdir( -p)? (('[^']*'|[^'/ ]+)(/('[^']*'|[^'/ ]+))*)$");
+        super("^mkdir( -p)? (('[^']*'|[^'/ ]+)(/('[^']*'|[^'/ ]+))+$)$");
     }
 
     @Override
@@ -42,7 +42,6 @@ public class MultipleMkdir extends CommandBase {
                 return;
             }
         }
-
         println(Text.Style.NEGRITO.apply(Text.Color.VERDE.apply("[Success]")) +
                 Text.Color.VERDE.apply(" O caminho \"") +
                 Text.Style.NEGRITO.apply(Text.Color.VERDE.apply(path)) +
